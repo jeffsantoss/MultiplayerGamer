@@ -1,0 +1,3 @@
+﻿
+
+Preciso criar uma thread só de resposta.
