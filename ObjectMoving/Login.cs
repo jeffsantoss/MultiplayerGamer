@@ -52,7 +52,7 @@ namespace ObjectMoving
                     players.Add(
                     new Player
                     {
-                        Coin = (int) obj["Coins"],
+                        Coins = (int) obj["Coins"],
                         D = (Position) obj["D"],
                         Id = (int) obj["Id"],
                         Login = (string) obj["Login"],
@@ -74,7 +74,6 @@ namespace ObjectMoving
             this.ClearFields(user);
 
             return;
-
         }
 
         // register

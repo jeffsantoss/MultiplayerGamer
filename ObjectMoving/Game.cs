@@ -10,29 +10,29 @@ using System.Net.Sockets;
 using System.Text;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ObjectMoving
-{
+{   
     public partial class Game : Form
     {
-
-        List<Tuple<Player, Timer, Label>> _forms;
         GamerRepository _players;
         Player _myselfuser;
         TcpClient _client;
         NetworkStream _stream;
-        //List<System.Threading.Thread> ThreadPlayers;
-        System.Threading.Thread _thread;
+        Thread _thread;
 
         public Game(TcpClient client,List<Player> players)
         {
             InitializeComponent();
 
-            this._myselfuser = players[0];
-            this._client = client;
-            this._players = new GamerRepository(players.Where(c => c != this._myselfuser).ToList());
+            _myselfuser = players[0];
+            _client = client;
+            _players = new GamerRepository(players.Where(c => c != this._myselfuser).ToList());
+
             _stream = _client.GetStream();
-            _thread = new System.Threading.Thread(ResponseThread);
+
+            _thread = new Thread(ResponseThread);
             _thread.Start();
 
             PopulateForm();
@@ -40,24 +40,7 @@ namespace ObjectMoving
 
         public void PopulateForm()
         {
-            _forms = new List<Tuple<Player, Timer, Label>>();
-
-            foreach (var player in _players.Players)
-            {
-                var timer = new System.Windows.Forms.Timer(this.components);
-
-                var label = new System.Windows.Forms.Label()
-                {
-                    AutoSize = true,
-                    Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))),
-                    Size = new System.Drawing.Size(37, 16)
-                };
-
-                _forms.Add(new Tuple<Player, Timer, Label>(player, timer, label));
-
-                this.Controls.Add(label);
-            }
-
+            _players.Players.ForEach(p => CreateFormsToPlayer(p));
         }
 
         public void ResponseThread()
@@ -70,7 +53,7 @@ namespace ObjectMoving
 
                 var player = new Player
                 {
-                    Coin = (int)obj["Coins"],
+                    Coins = (int)obj["Coins"],
                     D = (Position)obj["D"],
                     Id = (int)obj["Id"],
                     Login = (string)obj["Login"],
@@ -80,59 +63,42 @@ namespace ObjectMoving
 
                 if (response.Cod == MessageType.PlayerMessage)
                 {
-                    if (!_players.Players.Contains(player))
+                    if (!_players.Players.Any(p => p.Equals(player)))
                     {
-                        var timer = new System.Windows.Forms.Timer(this.components);
-
-                        var label = new System.Windows.Forms.Label()
-                        {
-                            AutoSize = true,
-                            Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))),
-                            Size = new System.Drawing.Size(37, 16)
-                        };
-
-                        try
-                        {
-                            this.Controls.Add(label);
-                            c _forms.Add(new Tuple<Player, Timer, Label>(player, timer, label));
-                        }
-                        catch
-                        {
-                        }
-                        
+                        CreateFormsToPlayer(player);
                         _players.Players.Add(player);
                     }
+                    else
+                    {
+                        var playerfind = _players.GetPlayer(player);
 
-                    var playerfind = _players.GetPlayer(player);
-  
-                    playerfind.D = player.D;
+                        playerfind.D = player.D;
+                    }
                 }
                 else if (response.Cod == MessageType.LogoutMessage)
                 {
-                    var tupletoremove = _forms.Find(a => a.Item1.Equals(player));
-
-                    _forms.Remove(tupletoremove);
-
                     _players.Players.Remove(player);
+                    player.D = Position.Invalid;
                 }
 
             }
         }
 
         private void FormView_Paint(object sender, PaintEventArgs e)
-        {
+        {     
             foreach (var player in _players.Players)
             {
-                var tuple = _forms.SingleOrDefault(a => a.Item1.Equals(player));
+                if (!Controls.Contains(player.Label))
+                {
+                    Controls.Add(player.Label);
+                }
 
-                tuple.Item3.Text = player.Login;
+                //player.Label.Text = player.Login;
 
-                tuple.Item3.Location = new Point(player.X, player.Y);
+                player.Label.Location = new Point(player.X, player.Y);
 
                 e.Graphics.DrawImage(new Bitmap("mushroom.png"), player.X, player.Y, 64, 64);
             }
-
-            // myself.
 
             label1.Location = new Point(_myselfuser.X, _myselfuser.Y);
 
@@ -141,59 +107,18 @@ namespace ObjectMoving
             e.Graphics.DrawImage(new Bitmap("mushroom.png"), _myselfuser.X, _myselfuser.Y, 64, 64);
         }
 
+
         private void tmrMoving_Tick(object sender, EventArgs e)
         {
-            PlayerMoving(_myselfuser);
+            _myselfuser.Move();
 
-            this._players.Players.ForEach(p => PlayerMoving(p));
+            _players.Players.ForEach(p => p.Move());
 
             Invalidate();
         }
-
-        private void PlayerMoving(Player player)
-        {
-            if (player.X > 620)
-            {
-                player.X -= 10;
-            }
-            else if (player.X < 5)
-            {
-                player.X += 10;
-            }
-
-            if (player.Y > 520)
-            {
-                player.Y -= 10;
-            }
-            else if (player.Y < 10)
-            {
-                player.Y += 10;
-            }
-
-            if (player.D == Position.Right)
-            {
-                player.X += 10;
-            }
-            else if (player.D == Position.Left)
-            {
-                player.X -= 10;
-            }
-            else if (player.D == Position.Up)
-            {
-                player.Y -= 10;
-            }
-            else if (player.D == Position.Down)
-            {
-                player.Y += 10;
-            }
-        }
+        
 
         private void FormView_KeyDown(object sender, KeyEventArgs e)
-        {
-            Moving(e);
-        }
-
-        private void Moving(KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
             {
@@ -215,7 +140,24 @@ namespace ObjectMoving
             _stream.Send(new Communication(MessageType.PlayerMessage, _myselfuser).ToJson());
         }
 
+        private void GameClosing(object sender, FormClosingEventArgs e)
+        {
+            _client.Close();
+            Environment.Exit(0);
+        }
 
+        private void CreateFormsToPlayer(Player player)
+        {
+            player.Timer = new System.Windows.Forms.Timer(this.components);
 
+            player.Label = new Label()
+            {
+                AutoSize = true,
+                Font = new Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))),
+                ForeColor = System.Drawing.Color.Red,
+                Size = new Size(40, 20),
+                Text = player.Login
+            };
+        }
     }
 }

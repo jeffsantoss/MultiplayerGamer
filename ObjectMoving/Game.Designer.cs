@@ -42,9 +42,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(302, 416);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(85, 18);
             this.label1.TabIndex = 0;
             this.label1.Text = "NameTest";
             // 
@@ -58,6 +59,7 @@
             this.Name = "Game";
             this.Text = "Baúzinho";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormView_Paint);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormView_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();

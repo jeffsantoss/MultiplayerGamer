@@ -40,3 +40,17 @@ C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribui
 C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\ObjectMoving\obj\x86\Debug\ObjectMoving.csproj.GenerateResource.Cache
 C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\ObjectMoving\obj\x86\Debug\ObjectMoving.exe
 C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\ObjectMoving\obj\x86\Debug\ObjectMoving.pdb
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\bin\Debug\mushroom.png
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\bin\Debug\ObjectMoving.exe.config
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\bin\Debug\ObjectMoving.exe
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\bin\Debug\ObjectMoving.pdb
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\bin\Debug\Core.dll
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\bin\Debug\Core.pdb
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.csprojResolveAssemblyReference.cache
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.Game.resources
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.Login.resources
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.Properties.Resources.resources
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.Register.resources
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.csproj.GenerateResource.Cache
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.exe
+C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\MultiplayerGamer\ObjectMoving\obj\x86\Debug\ObjectMoving.pdb
