@@ -1,5 +1,0 @@
-C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\Testes\bin\Debug\Testes.exe.config
-C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\Testes\bin\Debug\Testes.exe
-C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\Testes\bin\Debug\Testes.pdb
-C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\Testes\obj\Debug\Testes.exe
-C:\Users\claudia e Davi\Documents\Visual Studio 2017\Projects\Sistemas Distribuidos\Testes\obj\Debug\Testes.pdb
