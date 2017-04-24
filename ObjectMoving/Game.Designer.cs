@@ -58,8 +58,8 @@
             this.DoubleBuffered = true;
             this.Name = "Game";
             this.Text = "Baúzinho";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormView_Paint);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GameClosing);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FormView_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormView_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();

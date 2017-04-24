@@ -14,7 +14,7 @@ namespace ObjectMoving
         [STAThread]
         static void Main()
         {
-            var client = new TcpClient("181.222.146.219" , 5555);
+            var client = new TcpClient("181.222.146.219" , 5556);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

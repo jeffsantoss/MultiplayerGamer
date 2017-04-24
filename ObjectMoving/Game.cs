@@ -45,6 +45,7 @@ namespace ObjectMoving
 
         public void ResponseThread()
         {
+
             while (true)
             {
                 var response = _stream.Response(_client);
@@ -67,6 +68,8 @@ namespace ObjectMoving
                     {
                         CreateFormsToPlayer(player);
                         _players.Players.Add(player);
+
+                        Console.WriteLine($"User {player.Login} join in game at {DateTime.Now.ToString("dd/MMM/yyyy - HH:mm")}");
                     }
                     else
                     {
@@ -77,8 +80,16 @@ namespace ObjectMoving
                 }
                 else if (response.Cod == MessageType.LogoutMessage)
                 {
+                    var playerfind = _players.GetPlayer(player);
+
+                    if (playerfind.Label.InvokeRequired)
+                        playerfind.Label.BeginInvoke((MethodInvoker) delegate {
+                            playerfind.Label.Text = "";                    
+                            });
+
                     _players.Players.Remove(player);
-                    player.D = Position.Invalid;
+
+                    Console.WriteLine($"User {player.Login} left the game at {DateTime.Now.ToString("dd/MMM/yyyy - HH:mm")}");
                 }
 
             }
@@ -93,11 +104,9 @@ namespace ObjectMoving
                     Controls.Add(player.Label);
                 }
 
-                //player.Label.Text = player.Login;
+               player.Label.Location = new Point(player.X, player.Y);
 
-                player.Label.Location = new Point(player.X, player.Y);
-
-                e.Graphics.DrawImage(new Bitmap("mushroom.png"), player.X, player.Y, 64, 64);
+               e.Graphics.DrawImage(new Bitmap("mushroom.png"), player.X, player.Y, 64, 64);
             }
 
             label1.Location = new Point(_myselfuser.X, _myselfuser.Y);
@@ -142,7 +151,10 @@ namespace ObjectMoving
 
         private void GameClosing(object sender, FormClosingEventArgs e)
         {
+            _stream.Send(new Communication(MessageType.LogoutMessage, _myselfuser).ToJson());
+
             _client.Close();
+
             Environment.Exit(0);
         }
 
@@ -153,9 +165,9 @@ namespace ObjectMoving
             player.Label = new Label()
             {
                 AutoSize = true,
-                Font = new Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0))),
+                Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0))),
                 ForeColor = System.Drawing.Color.Red,
-                Size = new Size(40, 20),
+                Size = new Size(85, 18),
                 Text = player.Login
             };
         }
