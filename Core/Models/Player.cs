@@ -35,23 +35,7 @@ namespace Core.Models
         {
             return ((Player)obj).Login.Equals(this.Login);
         }
-
-        /*
-        public void StartMove()
-        {
-            Thread thread = new Thread(PlayerMove);
-            thread.Start();
-        }
         
-        public void PlayerMove()
-        {
-            while (this.D < Position.Invalid)
-            {
-                Move();
-            }
-        }
-        */
-
         public void Move()
         {
             if (this.D == Position.Right && this.X < 620)

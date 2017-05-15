@@ -16,7 +16,7 @@ namespace ObjectMoving
 {   
     public partial class Game : Form
     {
-        GamerRepository _players;
+        GamerRepository _repository;
         Player _myselfuser;
         TcpClient _client;
         NetworkStream _stream;
@@ -28,7 +28,7 @@ namespace ObjectMoving
 
             _myselfuser = players[0];
             _client = client;
-            _players = new GamerRepository(players.Where(c => c != this._myselfuser).ToList());
+            _repository = new GamerRepository(players.Where(c => c != this._myselfuser).ToList());
 
             _stream = _client.GetStream();
 
@@ -40,15 +40,17 @@ namespace ObjectMoving
 
         public void PopulateForm()
         {
-            _players.Players.ForEach(p => CreateFormsToPlayer(p));
+            _repository.Players.ForEach(p => CreateFormsToPlayer(p));
         }
 
         public void ResponseThread()
         {
-
             while (true)
             {
                 var response = _stream.Response(_client);
+
+                if (response == null)
+                    continue;
 
                 var obj = response.Object as Dictionary<string, object>;
 
@@ -64,30 +66,30 @@ namespace ObjectMoving
 
                 if (response.Cod == MessageType.PlayerMessage)
                 {
-                    if (!_players.Players.Any(p => p.Equals(player)))
+                    if (!_repository.Players.Any(p => p.Equals(player)))
                     {
                         CreateFormsToPlayer(player);
-                        _players.Players.Add(player);
+                        _repository.Players.Add(player);
 
                         Console.WriteLine($"User {player.Login} join in game at {DateTime.Now.ToString("dd/MMM/yyyy - HH:mm")}");
                     }
                     else
                     {
-                        var playerfind = _players.GetPlayer(player);
+                        var playerfind = _repository.GetPlayer(player);
 
                         playerfind.D = player.D;
                     }
                 }
                 else if (response.Cod == MessageType.LogoutMessage)
                 {
-                    var playerfind = _players.GetPlayer(player);
+                    var playerfind = _repository.GetPlayer(player);
 
                     if (playerfind.Label.InvokeRequired)
                         playerfind.Label.BeginInvoke((MethodInvoker) delegate {
                             playerfind.Label.Text = "";                    
                             });
 
-                    _players.Players.Remove(player);
+                    _repository.Players.Remove(player);
 
                     Console.WriteLine($"User {player.Login} left the game at {DateTime.Now.ToString("dd/MMM/yyyy - HH:mm")}");
                 }
@@ -97,7 +99,7 @@ namespace ObjectMoving
 
         private void FormView_Paint(object sender, PaintEventArgs e)
         {     
-            foreach (var player in _players.Players)
+            foreach (var player in _repository.Players)
             {
                 if (!Controls.Contains(player.Label))
                 {
@@ -121,7 +123,7 @@ namespace ObjectMoving
         {
             _myselfuser.Move();
 
-            _players.Players.ForEach(p => p.Move());
+            _repository.Players.ForEach(p => p.Move());
 
             Invalidate();
         }

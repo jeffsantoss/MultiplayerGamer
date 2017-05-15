@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -14,7 +15,11 @@ namespace ObjectMoving
         [STAThread]
         static void Main()
         {
-            var client = new TcpClient("181.222.146.219" , 5556);
+            var client = new TcpClient("172.17.23.49" , 5555);
+
+            var _stream = client.GetStream();
+
+            _stream.Send(new Communication(MessageType.SyncMessage,"Sync").ToJson());
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

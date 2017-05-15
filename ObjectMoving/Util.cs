@@ -56,7 +56,13 @@ namespace ObjectMoving
 
             var communication = new Communication();
 
-            communication = new JavaScriptSerializer().Deserialize<Communication>(response);
+            try
+            {
+                communication = new JavaScriptSerializer().Deserialize<Communication>(response);
+            }
+            catch {
+                return null;
+            }
 
             return communication;
         }

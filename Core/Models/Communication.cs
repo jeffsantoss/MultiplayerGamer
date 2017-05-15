@@ -8,8 +8,8 @@ namespace Core.Models
 {
     public class Communication
     {
-        public MessageType Cod { get; set; }
-        public object Object { get; set; }
+        public MessageType Cod { get; private set; }
+        public object Object { get; private set; }
 
         public Communication(MessageType cod, object obj)
         {
