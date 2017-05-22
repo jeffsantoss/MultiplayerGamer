@@ -40,7 +40,7 @@ namespace ObjectMoving
             stream.Send(json);
 
             var jsonresponse = stream.Response(_client);
-           
+
             if (jsonresponse.Cod == MessageType.AllUserMessage)
             {
                 var players = new List<Player>();
@@ -52,15 +52,16 @@ namespace ObjectMoving
                     players.Add(
                     new Player
                     {
-                        Coins = (int) obj["Coins"],
-                        D = (Position) obj["D"],
-                        Id = (int) obj["Id"],
-                        Login = (string) obj["Login"],
-                        X = (int) obj["X"],
-                        Y = (int) obj["Y"]
+                        Coins = (int)obj["Coins"],
+                        D = (Position)obj["D"],
+                        Id = (int)obj["Id"],
+                        Login = (string)obj["Login"],
+                        X = (int)obj["X"],
+                        Y = (int)obj["Y"],
+                        IsLeader = (bool)obj["isLeader"]
                     }
                     );
-                 }
+                }
 
                 MessageBox.Show("Login Sucesss!");
 

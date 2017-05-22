@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.tmrMoving = new System.Windows.Forms.Timer(this.components);
             this.Teste = new System.Windows.Forms.Timer(this.components);
+            this.Teste.Interval = 500;
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 

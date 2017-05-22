@@ -15,11 +15,13 @@ namespace ObjectMoving
         [STAThread]
         static void Main()
         {
-            var client = new TcpClient("172.17.23.49" , 5555);
+            var client = new TcpClient("172.17.26.72" , 5556);
 
-            var _stream = client.GetStream();
+           var _stream = client.GetStream();
 
-            _stream.Send(new Communication(MessageType.SyncMessage,"Sync").ToJson());
+           _stream.Response(client);
+
+           _stream.Send(new Communication(MessageType.SyncMessage,"Sync").ToJson());
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

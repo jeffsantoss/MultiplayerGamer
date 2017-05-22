@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using System.Threading;
 
 namespace ObjectMoving
-{   
+{
     public partial class Game : Form
     {
         GamerRepository _repository;
@@ -22,7 +22,7 @@ namespace ObjectMoving
         NetworkStream _stream;
         Thread _thread;
 
-        public Game(TcpClient client,List<Player> players)
+        public Game(TcpClient client, List<Player> players)
         {
             InitializeComponent();
 
@@ -61,7 +61,8 @@ namespace ObjectMoving
                     Id = (int)obj["Id"],
                     Login = (string)obj["Login"],
                     X = (int)obj["X"],
-                    Y = (int)obj["Y"]
+                    Y = (int)obj["Y"],
+                    IsLeader = (bool)obj["IsLeader"]
                 };
 
                 if (response.Cod == MessageType.PlayerMessage)
@@ -85,9 +86,10 @@ namespace ObjectMoving
                     var playerfind = _repository.GetPlayer(player);
 
                     if (playerfind.Label.InvokeRequired)
-                        playerfind.Label.BeginInvoke((MethodInvoker) delegate {
-                            playerfind.Label.Text = "";                    
-                            });
+                        playerfind.Label.BeginInvoke((MethodInvoker)delegate
+                        {
+                            playerfind.Label.Text = "";
+                        });
 
                     _repository.Players.Remove(player);
 
@@ -98,7 +100,7 @@ namespace ObjectMoving
         }
 
         private void FormView_Paint(object sender, PaintEventArgs e)
-        {     
+        {
             foreach (var player in _repository.Players)
             {
                 if (!Controls.Contains(player.Label))
@@ -106,9 +108,14 @@ namespace ObjectMoving
                     Controls.Add(player.Label);
                 }
 
-               player.Label.Location = new Point(player.X, player.Y);
+                if (_myselfuser.Colidiu(player))
+                {
+                    Console.WriteLine($"Bati no lider {player.Login}");
+                }
 
-               e.Graphics.DrawImage(new Bitmap("mushroom.png"), player.X, player.Y, 64, 64);
+                player.Label.Location = new Point(player.X, player.Y);
+
+                e.Graphics.DrawImage(new Bitmap("mushroom.png"), player.X, player.Y, 64, 64);
             }
 
             label1.Location = new Point(_myselfuser.X, _myselfuser.Y);
@@ -127,28 +134,34 @@ namespace ObjectMoving
 
             Invalidate();
         }
-        
+
 
         private void FormView_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Left)
             {
                 _myselfuser.D = Position.Left;
+
+                _stream.Send(new Communication(MessageType.PlayerMessage, _myselfuser).ToJson());
             }
             else if (e.KeyCode == Keys.Right)
             {
                 _myselfuser.D = Position.Right;
+
+                _stream.Send(new Communication(MessageType.PlayerMessage, _myselfuser).ToJson());
             }
             else if (e.KeyCode == Keys.Up)
             {
                 _myselfuser.D = Position.Up;
+
+                _stream.Send(new Communication(MessageType.PlayerMessage, _myselfuser).ToJson());
             }
             else if (e.KeyCode == Keys.Down)
             {
                 _myselfuser.D = Position.Down;
-            }
 
-            _stream.Send(new Communication(MessageType.PlayerMessage, _myselfuser).ToJson());
+                _stream.Send(new Communication(MessageType.PlayerMessage, _myselfuser).ToJson());
+            }
         }
 
         private void GameClosing(object sender, FormClosingEventArgs e)
@@ -163,6 +176,8 @@ namespace ObjectMoving
         private void CreateFormsToPlayer(Player player)
         {
             player.Timer = new System.Windows.Forms.Timer(this.components);
+
+            player.Timer.Interval = 500;
 
             player.Label = new Label()
             {

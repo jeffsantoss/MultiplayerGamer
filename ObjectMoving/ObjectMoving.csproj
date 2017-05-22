@@ -76,7 +76,6 @@
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
     <Compile Include="Util.cs" />
-    <Compile Include="Util\Util.cs" />
     <EmbeddedResource Include="Game.resx">
       <DependentUpon>Game.cs</DependentUpon>
     </EmbeddedResource>

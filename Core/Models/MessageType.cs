@@ -13,6 +13,6 @@ namespace Core.Models
         PlayerMessage = 2,
         AllUserMessage = 3,
         LogoutMessage = 4,
-        SyncMessage = 6
+        SyncMessage = 5
     }
 }

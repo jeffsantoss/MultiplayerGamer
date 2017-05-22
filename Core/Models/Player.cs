@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,6 +25,7 @@ namespace Core.Models
         public int Coins { get; set; }
         public Label Label { get; set; }
         public System.Windows.Forms.Timer Timer { get; set; }
+        public bool IsLeader { get; set; }
 
         public Player()
         {
@@ -54,6 +56,20 @@ namespace Core.Models
             {
                 this.Y += 10;
             }
+        }
+
+        public bool Colidiu(Player player)
+        {
+            var myself = new Rectangle(this.X,this.Y, 64,64);
+
+            var enemy = new Rectangle(player.X, player.Y, 64, 64);
+
+            if(myself.IntersectsWith(enemy) && player.IsLeader)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

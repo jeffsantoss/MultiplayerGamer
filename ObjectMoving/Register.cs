@@ -35,14 +35,10 @@ namespace ObjectMoving
                 Password =  this.textBox2.Text,
                 Login = this.textBox1.Text
             };
-
-            var json = new Communication(MessageType.RegisterMessage, _user).ToJson();
-                    
-            //MessageBox.Show($"Send object {json} to server: {_client.Client.RemoteEndPoint}!");
-
+            
             var stream = _client.GetStream();
 
-            stream.Send(json);
+            stream.Send(new Communication(MessageType.RegisterMessage, _user).ToJson());
             
             var jsonResponse = stream.Response(_client);
 
@@ -52,7 +48,7 @@ namespace ObjectMoving
 
             if (!User["Id"].Equals(0 as object))
             {
-                MessageBox.Show($"Welcome {User["Name"]} your register Sucesss! Make your credence now..");
+                MessageBox.Show($"Welcome {User["Name"]}!");
                 this.HideAndShow(new Login(_client));
                 return;
             }
