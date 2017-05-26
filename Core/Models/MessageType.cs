@@ -12,7 +12,6 @@ namespace Core.Models
         LoginMessage = 1,
         PlayerMessage = 2,
         AllUserMessage = 3,
-        LogoutMessage = 4,
-        SyncMessage = 5
+        LogoutMessage = 4
     }
 }

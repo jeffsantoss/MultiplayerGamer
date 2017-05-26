@@ -35,7 +35,7 @@ namespace ObjectMoving
         // JSON
         public static string ToJson(this object Object)
         {
-            return new JavaScriptSerializer().Serialize(Object);
+           return new JavaScriptSerializer().Serialize(Object);
         }
 
         // Stream to send/recieve Json's
@@ -46,7 +46,7 @@ namespace ObjectMoving
             stream.Write(data, 0, data.Length);
         }
 
-        public static Communication Response(this NetworkStream stream, TcpClient client)
+        public static Communication RecieveJson(this NetworkStream stream, TcpClient client)
         {
             Byte[] data = new Byte[client.ReceiveBufferSize];
 
@@ -67,6 +67,16 @@ namespace ObjectMoving
             return communication;
         }
         
+        public static object ReceiveObject(this NetworkStream stream, TcpClient client)
+        {
+            Byte[] data = new Byte[client.ReceiveBufferSize];
+
+            Int32 bytes = stream.Read(data, 0, data.Length);
+
+            var timer = System.Text.Encoding.UTF8.GetString(data, 0, bytes);
+
+            return timer as object;
+        }
         // in test.
         public static Communication ResponseAsyc(this NetworkStream stream, TcpClient client)
         {

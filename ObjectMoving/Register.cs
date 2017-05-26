@@ -40,7 +40,7 @@ namespace ObjectMoving
 
             stream.Send(new Communication(MessageType.RegisterMessage, _user).ToJson());
             
-            var jsonResponse = stream.Response(_client);
+            var jsonResponse = stream.RecieveJson(_client);
 
             //stream.Close();
 
